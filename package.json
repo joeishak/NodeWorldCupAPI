@@ -1,10 +1,10 @@
 {
   "name": "worldcupapi",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,5 +15,14 @@
     "mssql": "^4.1.0",
     "mysql": "^2.15.0",
     "request": "^2.87.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joeishak/NodeWorldCupAPI.git"
+  },
+  "bugs": {
+    "url": "https://github.com/joeishak/NodeWorldCupAPI/issues"
+  },
+  "homepage": "https://github.com/joeishak/NodeWorldCupAPI#readme",
+  "description": ""
 }
