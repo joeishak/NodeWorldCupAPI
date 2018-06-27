@@ -8,7 +8,7 @@ let config = require('../configuration/config');
 
 router.use((req,res,next)=>{
 
-   console.log("Welcome to the Extra/Footballapi Route");
+   console.log("elcome to the Extra/Footballapi Route");
    next();
 });
 
