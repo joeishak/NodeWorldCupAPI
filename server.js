@@ -8,13 +8,14 @@ let server            = http.createServer(app);
 let bodyParser        = require('body-parser');
 
 //Use Body Parser when reading data from a request
-app.use(bodyParser());
-app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser({limit:'500mb',extended:true,parameterLimit:50000}));
+// app.use(bodyParser.json({limit: '500mb'}));
+// app.use(bodyParser.urlencoded());
 
 
 //Tell the server where to listen 
-server.listen(8010, () =>{
-    console.log("Hello There listening on port 80 ")
+server.listen(8010, () => {
+    console.log("World Cup API Listening On Port 8010")
 });
 
 // Setting the headers for all routes to be CORS compliant

@@ -11,9 +11,65 @@ router.use((req,res,next)=>{
    console.log("elcome to the Extra/Footballapi Route");
    next();
 });
-router.post('/',(req,res,next)=>{
-    res.send(req.body);
-})
+// Filter Teams
+router.post('/teams',(req,res,next)=>{
+    console.log('Received Teams');
+    console.log(req.body[1]);
+    let Teams = req.body.Teams;
+    // for(let i = 0; i<Teams.length;i++){
+    //     for(let j = 0; j<Teams[i].squad.length;j++){
+    //         let player = Teams[i].squad[j];
+    //         player.teamId = Teams[i].team_id;
+    //     }
+    // }
+    
+    // console.log(req);
+    next();
+});
+// Filter Squads
+// router.post('/',(req,res,next)=>{
+//     console.log('req.body.Squads');
+//     let Squads = req.body.Sqauds;
+//     // console.log(req);
+//     next();
+// });
+// Filter Standings 
+router.post('/standings',(req,res,next)=>{
+    console.log('Recieved Standings');
+    console.log(req.body[2]);
+//     let Standings = req.body;
+
+//     for(let i = 0; i<Standings.length;i++){
+//         let standing = Standings[i];
+//         // console.log(standing);
+//         SQL +=  ` update dbo.standings
+//         set position = ${standing.position},
+//         overall_gp =  ${standing.overall_gp},
+//         overall_w = ${standing.overall_w},
+//         overall_gs  = ${standing.overall_gs},
+//         points =  ${standing.points},
+//         overall_l = ${standing.overall_l}
+//         where team_name like  '%${standing.team_name}%';`
+//     }
+//     // console.log(req);
+// console.log(Standings);
+});
+
+// Filter Matches
+router.post('/matches',(req,res,next)=>{
+    console.log('Recieved Matches:')
+    console.log(req.body[3])
+    let Matches = req.body;
+    // console.log(req);
+});
+
+// // Filter Events
+// router.post('/',(req,res,next)=>{
+//     console.log('req.body.Events')
+//     let Events = req.body.Events;
+//     // console.log(req);
+//     next();
+// })
 router.get('/',(req,res,next)=>{
  
  
