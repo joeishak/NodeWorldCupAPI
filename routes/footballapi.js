@@ -1,7 +1,7 @@
 let express = require('express');
 let router = express.Router();
 let request = require('request');
-let Standings = require('./standings.js');
+// let Standings = require('./standings.js');
 let config = require('../configuration/config');
 // localhost/extract/footballapi/
 // Default FootBALL API REQUESTS FOR DATA
@@ -11,7 +11,9 @@ router.use((req,res,next)=>{
    console.log("elcome to the Extra/Footballapi Route");
    next();
 });
-
+router.post('/',(req,res,next)=>{
+    res.send(req.body);
+})
 router.get('/',(req,res,next)=>{
  
  
