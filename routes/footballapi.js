@@ -5,25 +5,59 @@ let request = require('request');
 let config = require('../configuration/config');
 // localhost/extract/footballapi/
 // Default FootBALL API REQUESTS FOR DATA
-
+let sqlInsertStatement = "";
+let sqlUpdateStatement = "";
+let squads = [];
 router.use((req,res,next)=>{
 
-   console.log("elcome to the Extra/Footballapi Route");
+   console.log("Welcome to the Extra/Footballapi Route");
    next();
 });
+router.post('/',(req,res,next)=> {
+    
+})
 // Filter Teams
-router.post('/teams',(req,res,next)=>{
+router.post('/',(req,res,next)=>{
     console.log('Received Teams');
     console.log(req.body[1]);
-    let Teams = req.body.Teams;
-    // for(let i = 0; i<Teams.length;i++){
-    //     for(let j = 0; j<Teams[i].squad.length;j++){
-    //         let player = Teams[i].squad[j];
-    //         player.teamId = Teams[i].team_id;
-    //     }
-    // }
     
-    // console.log(req);
+    let Teams = req.body.Teams;
+    // For Each of the Teams
+    for(let i = 0; i<Teams.length;i++){
+        // And each squad of that team
+        for(let j = 0; j<Teams[i].squad.length;j++){
+            let player = Teams[i].squad[j];
+            player.teamId = Teams[i].team_id;
+
+            player.number = (player.number=='')? 0: player.number;
+            player.injured = (player.injured == "False") ? 0:1;
+            
+
+            sqlInsertStatement+=`
+            Insert into dbo.squads 
+            Values(${player.id},'${player.name}',${player.number},'${player.position}',
+            ${player.injured},${player.minutes},${player.lineups},${player.appearences},
+            ${player.goals},${player.assists},${player.yellowcards},${player.yellowred},${player.redcards},${player.teamId});`
+
+
+            sqlUpdateStatement+=`
+            Update dbo.squads set `+
+            `injured = ${player.injured},`+
+            `minutes = ${player.minutes},`+
+            `lineups = ${player.lineups},`+
+            `appearances = ${player.appearences},`+
+            `goals = ${player.goals},`+
+            `assists = ${player.assists},`+
+            `yellowcards = ${player.yellowcards},`+
+            `yellowreds = ${player.yellowred},`+
+            `redcards =${player.redcards}`+
+            `where id = ${player.id} ;`
+        }
+    }
+    
+    // res.status(200).send(sqlInsertStatement);
+
+    // res.status(200).send(sqlUpdateStatement);
     next();
 });
 // Filter Squads
@@ -34,33 +68,49 @@ router.post('/teams',(req,res,next)=>{
 //     next();
 // });
 // Filter Standings 
-router.post('/standings',(req,res,next)=>{
+router.post('/',(req,res,next)=>{
     console.log('Recieved Standings');
     console.log(req.body[2]);
-//     let Standings = req.body;
+    let Standings = req.body.Standings;
 
-//     for(let i = 0; i<Standings.length;i++){
-//         let standing = Standings[i];
-//         // console.log(standing);
-//         SQL +=  ` update dbo.standings
-//         set position = ${standing.position},
-//         overall_gp =  ${standing.overall_gp},
-//         overall_w = ${standing.overall_w},
-//         overall_gs  = ${standing.overall_gs},
-//         points =  ${standing.points},
-//         overall_l = ${standing.overall_l}
-//         where team_name like  '%${standing.team_name}%';`
-//     }
-//     // console.log(req);
+    for(let i = 0; i<Standings.length;i++){
+        let standing = Standings[i];
+        // console.log(standing);
+        sqlUpdateStatement +=  `update dbo.standings
+        set position = ${standing.position},
+        overall_gp =  ${standing.overall_gp},
+        overall_w = ${standing.overall_w},
+        overall_gs  = ${standing.overall_gs},
+        points =  ${standing.points},
+        overall_l = ${standing.overall_l}
+        where team_name like  '%${standing.team_name}%';`
+    }
+    // console.log(req);
 // console.log(Standings);
+    next();
 });
 
 // Filter Matches
-router.post('/matches',(req,res,next)=>{
+router.post('/',(req,res,next)=>{    
     console.log('Recieved Matches:')
     console.log(req.body[3])
-    let Matches = req.body;
+    let Matches = req.body.Matches;
     // console.log(req);
+    Matches.forEach(match=>{
+        sqlUpdateStatement += 
+        `Update dbo.football_matches
+                            status = '${match.status}', 
+                            timer = '${match.timer}',
+                            time =  '${match.time}',
+                            homeTeamId = ${match.localteam_id},
+                            awayTeamId = ${match.visitorteam_id}, 
+                            homeScore = ${match.localteam_score}, 
+                            awayScore = ${match.visitorteam_score}
+                        where apiMatchId = ${match.id},`
+        
+    })//End For Each
+
+    res.send(sqlUpdateStatement);
 });
 
 // // Filter Events
