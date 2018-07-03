@@ -1,5 +1,5 @@
 module.exports = {
-    server: 'vm3.infosol.com',
+    server: 'localhost',
     database: 'worldcup',
     user: 'jishak',
     password: 'Infosol123!'
